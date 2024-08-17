@@ -1,0 +1,18 @@
+class Solution:
+    def reformatDate(self, date: str) -> str:
+        words=date.split()
+        s1,s2,s3='','',''
+        s1+=words[2]
+        mon={"Jan":1, "Feb":2, "Mar":3, "Apr":4, "May":5, "Jun":6, "Jul":7, "Aug":8, "Sep":9, "Oct":10, "Nov":11, "Dec":12}
+        for k,v in mon.items():
+            if words[1]==k:
+                s2+=str(v)
+        for j in words[0]:
+            if j.isdigit():
+                s3+=j
+        if len(s3)==1:
+            s3='0'+s3
+        if len(s2)==1:
+            s2='0'+s2
+        res=s1+'-'+s2+'-'+s3
+        return res
