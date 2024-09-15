@@ -1,0 +1,13 @@
+class Solution:
+    def findTheDifference(self, s: str, t: str) -> str:
+        
+        # Compute the sum of ASCII values of all characters in 't'
+        sum_t = sum(map(ord, t))
+        
+        # Compute the sum of ASCII values of all characters in 's'
+        sum_s = sum(map(ord, s))
+        
+        # The additional character's ASCII value is the difference between these sums
+        additional_char = chr(sum_t - sum_s)
+        
+        return additional_char
