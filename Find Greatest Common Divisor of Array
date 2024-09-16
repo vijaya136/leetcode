@@ -1,0 +1,10 @@
+class Solution:
+    def findGCD(self, nums: List[int]) -> int:
+        m=max(nums)
+        n=min(nums)
+        def gcd(m,n):
+            if n==0:
+                return m
+            else:
+                return gcd(n,m%n)
+        return gcd(m,n)
