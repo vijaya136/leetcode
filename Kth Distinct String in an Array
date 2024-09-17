@@ -1,0 +1,21 @@
+class Solution:
+    def kthDistinct(self, arr: List[str], k: int) -> str:
+        d=dict()
+        res=''
+        for i in arr:
+            if i in d:
+                d[i]+=1
+            else:
+                d[i]=1
+        w=[]
+        for key,v in d.items():
+            if v==1:
+                w.append(key)
+        #print(w)
+        res=""
+        c=1
+        while c<=len(w):
+            if c==k:
+                res+=w[c-1]
+            c+=1
+        return res 
