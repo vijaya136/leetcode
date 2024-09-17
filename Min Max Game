@@ -1,0 +1,18 @@
+class Solution:
+    def minMaxGame(self, nums: List[int]) -> int:
+        m=[]
+        if len(nums)==1:
+            return nums[0]
+        i,j=0,0
+        while len(nums)!=1:
+            m=[]
+            i,j=0,0
+            while i<len(nums):
+                if j%2==0:
+                    m.append(min(nums[i],nums[i+1]))
+                else:
+                    m.append(max(nums[i],nums[i+1]))
+                j+=1
+                i+=2
+            nums=m.copy()
+        return nums[0]
