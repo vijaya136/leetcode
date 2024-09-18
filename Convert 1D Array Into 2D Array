@@ -1,0 +1,14 @@
+class Solution:
+    def construct2DArray(self, original: List[int], m: int, n: int) -> List[List[int]]:
+        mat=[]
+        row=[]
+        if m*n==len(original):
+            for i in range(len(original)):
+                row.append(original[i])
+                if (i+1)%n==0:
+                    mat.append(row)
+                    row=[]
+        else:
+            return []
+        return mat
+            
