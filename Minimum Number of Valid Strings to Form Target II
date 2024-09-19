@@ -1,0 +1,75 @@
+class AhoCorasick:
+    def __init__(self, patterns: List[str]):
+        self.trie = dict()
+        self.vocab = set('qwertyuiopasdfghjklzxcvbnm')
+        root = self.trie
+        root['parent'] = None
+        root['$'] = 0 # len at root
+
+        # build the trie
+        for p in patterns:
+            cur = root
+            l = 0
+            for c in p:
+                if c not in cur:
+                    cur[c] = {'parent': cur}
+                cur = cur[c]
+                l += 1
+                # store the length at every prefix
+                cur['$'] = l
+
+        # construct suffix
+        # refer to these materials for more details about AhoCorasick
+        # - https://cp-algorithms.com/string/aho_corasick.html
+        # - https://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Slides02.pdf 
+        parent = None
+        root['suffix'] = None
+        q = deque([root])
+        while q:
+            for _ in range(len(q)):
+                cur = q.popleft()
+                for c, child in cur.items():
+                    if c not in self.vocab:
+                        continue
+
+                    suffix = cur['suffix']
+                    while suffix and c not in suffix:
+                        suffix = suffix['suffix']
+                    if suffix:
+                        child['suffix'] = suffix[c]
+                    else:
+                        child['suffix'] = root
+
+                    q.append(child)
+
+
+    def match(self, target: str):
+        cur = self.trie
+        for c in target:
+            while c not in cur and cur['suffix']:
+                cur = cur['suffix']
+
+            if c in cur:
+                cur = cur[c]
+
+            # the first match that ends at each position (which is also the longest)
+            yield cur['$']
+
+class Solution:
+    def minValidStrings(self, words: List[str], target: str) -> int:
+        trie = AhoCorasick(words)
+        
+        n = len(target)
+        i = 0
+        dp = [inf] * n + [0] # 0 at the end as the sentinel value
+        for m in trie.match(target):
+            # only consider the longest match
+            # because dp[i] <= dp[j] for i <= j
+            dp[i] = min(dp[i], dp[i - m] + 1)
+
+            # early stop when there can't be any match
+            if dp[i] == inf:
+                return -1
+            i += 1
+        
+        return dp[-2]
