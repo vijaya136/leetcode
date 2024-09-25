@@ -1,0 +1,33 @@
+class Solution:
+    def __init__(self):
+        self.cn = {}
+        self.store = {}
+    
+    def getVal(self, s):
+        if s in self.store:
+            return self.store[s]
+        
+        cur = ""
+        res = 0
+        for char in s:
+            cur += char
+            res += self.cn.get(cur, 0)
+        
+        self.store[s] = res
+        return res
+    
+    def sumPrefixScores(self, words: List[str]) -> List[int]:
+        self.cn.clear()
+        self.store.clear()
+        
+        for word in words:
+            cur = ""
+            for char in word:
+                cur += char
+                self.cn[cur] = self.cn.get(cur, 0) + 1
+        
+        res = []
+        for word in words:
+            res.append(self.getVal(word))
+        
+        return res
